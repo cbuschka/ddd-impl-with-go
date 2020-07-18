@@ -33,11 +33,11 @@ func (order *OrderAggregate) apply(event OrderEvent) error {
         order.OrderStatus = OrderCancelled
         return nil
     default:
-        return fmt.Errorf("Unkown event type: %s", reflect.TypeOf(event))
+        return fmt.Errorf("Unknown event type: %s", reflect.TypeOf(event))
     }
 }
 
-func (order *OrderAggregate) add(event OrderEvent) error {
+func (order *OrderAggregate) record(event OrderEvent) error {
     if err := order.apply(event); err != nil {
         return err
     }

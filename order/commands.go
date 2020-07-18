@@ -5,10 +5,6 @@ type PlaceOrderCommand struct {
     ItemNo      string
 }
 
-type MarkOrderDeliveredCommand struct {
-    OrderNumber string
-}
-
 type CancelOrderCommand struct {
     OrderNumber string
 }
