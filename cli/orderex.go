@@ -4,7 +4,7 @@ import (
     o "github.com/cbuschka/ddd-in-go/order"
 )
 
-func placeOrder(repo *o.Repository) (string, error) {
+func placeOrder(repo o.Repository) (string, error) {
     order := o.NewOrder()
     if err := order.PlaceOrder(&o.PlaceOrderCommand{OrderNumber: "O1"}); err != nil {
         return "", err
@@ -15,7 +15,7 @@ func placeOrder(repo *o.Repository) (string, error) {
     return order.OrderNumber, nil
 }
 
-func cancelOrder(orderNumber string, repo *o.Repository) error {
+func cancelOrder(orderNumber string, repo o.Repository) error {
     order, err := repo.FindOrder(orderNumber)
     if err != nil {
         panic(err.Error())
@@ -31,7 +31,7 @@ func cancelOrder(orderNumber string, repo *o.Repository) error {
 }
 
 func main() {
-    repo, err := o.GetRepository()
+    repo, err := o.GetInMemoryRepository()
     if err != nil {
         panic(err.Error())
     }
