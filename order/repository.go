@@ -2,10 +2,24 @@ package order
 
 import "fmt"
 
-var storedOrderEvents = make(map[string]*[]OrderEvent)
+type Repository struct {
+    storedOrderEvents map[string]*[]OrderEvent
+}
 
-func FindOrder(orderNumber string) (*OrderAggregate, error) {
-    events := storedOrderEvents[orderNumber]
+var repo = newRepository()
+
+func newRepository() *Repository {
+    repo := Repository{}
+    repo.storedOrderEvents = make(map[string]*[]OrderEvent)
+    return &repo
+}
+
+func GetRepository() (*Repository, error) {
+    return repo, nil
+}
+
+func (repo *Repository) FindOrder(orderNumber string) (*OrderAggregate, error) {
+    events := repo.storedOrderEvents[orderNumber]
     if events == nil {
         return nil, fmt.Errorf("No such order: %s", orderNumber)
     }
@@ -17,8 +31,8 @@ func FindOrder(orderNumber string) (*OrderAggregate, error) {
     return &order, nil
 }
 
-func StoreOrder(order *OrderAggregate) error {
-    storedOrderEvents[order.OrderNumber] = &order.events
+func (repo *Repository) StoreOrder(order *OrderAggregate) error {
+    repo.storedOrderEvents[order.OrderNumber] = &order.events
 
     return nil
 }
